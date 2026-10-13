@@ -1,5 +1,6 @@
 package tobyspring.splearn.domain.member;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
@@ -17,7 +18,6 @@ import java.util.Objects;
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDetail extends AbstractEntity {
-    @Embedded
     private Profile profile;
 
     private String introduction;
@@ -41,6 +41,7 @@ public class MemberDetail extends AbstractEntity {
 
     public void deactivate() {
         Assert.isTrue(deactivatedAt == null, "이미 deactivatedAt은 설정 되었습니다");
+        this.deactivatedAt = LocalDateTime.now();
     }
 
     void updateInfo(MemberInfoUpdateRequest updateRequest) {
