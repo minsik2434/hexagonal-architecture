@@ -59,6 +59,7 @@ public class Member extends AbstractEntity {
     }
 
     public void updateInfo(MemberInfoUpdateRequest updateRequest) {
+        Assert.state(getStatus() == MemberStatus.ACTIVE, "등록완료된 상태가 아니면 수정할 수 없습니다");
         this.nickname = Objects.requireNonNull(updateRequest.nickname());
 
         this.detail.updateInfo(updateRequest);
@@ -66,10 +67,6 @@ public class Member extends AbstractEntity {
 
     public boolean verifyPassword(String password, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(password, this.passwordHash);
-    }
-
-    public void changeNickname(String nickname) {
-        this.nickname = requireNonNull(nickname);
     }
 
     public void changePassword(String password, PasswordEncoder passwordEncoder) {

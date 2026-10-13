@@ -13,6 +13,7 @@ import tobyspring.splearn.domain.member.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static tobyspring.splearn.domain.member.MemberFixture.createMemberRegisterRequest;
 
 @SpringBootTest
@@ -76,6 +77,13 @@ public record MemberRegisterTest(MemberRegister memberRegister, EntityManager en
         return member;
     }
 
+    private Member registerMember(String email) {
+        Member member = memberRegister.register(createMemberRegisterRequest(email));
+        entityManager.flush();
+        entityManager.clear();
+        return member;
+    }
+
     @Test
     void updateInfo() {
         Member member = registerMember();
@@ -89,6 +97,20 @@ public record MemberRegisterTest(MemberRegister memberRegister, EntityManager en
         assertThat(member.getDetail().getProfile().address()).isEqualTo("minsik0001");
     }
 
+    @Test
+    void updateInfoFail() {
+        Member member = registerMember();
+        memberRegister.activate(member.getId());
+        member = memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("minmin", "minmin1000", "자기소개"));
+
+        Member member2 = registerMember("minsik@naver.com");
+        entityManager.flush();
+        entityManager.clear();
+
+        assertThatThrownBy(() -> memberRegister.updateInfo(member2.getId(), new MemberInfoUpdateRequest("peter", "minmin1000", "자기소개")))
+                .isInstanceOf(DuplicateProfileException.class);
+    }
+    
     private void checkValidation(MemberRegisterRequest invalid) {
         assertThatThrownBy(() -> memberRegister.register(invalid))
             .isInstanceOf(ConstraintViolationException.class);
