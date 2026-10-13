@@ -1,4 +1,4 @@
-package tobyspring.splearn.domain;
+package tobyspring.splearn.domain.member;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,14 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.NaturalIdCache;
 import org.springframework.util.Assert;
+import tobyspring.splearn.domain.*;
+import tobyspring.splearn.domain.shared.Email;
+
+import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
 @Entity
 @Getter
-@ToString
+@ToString(callSuper = true, exclude = "detail")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends AbstractEntity {
 
@@ -26,6 +29,9 @@ public class Member extends AbstractEntity {
 
     private MemberStatus status;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private MemberDetail detail;
+
     public static Member register(MemberRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
         Member member = new Member();
 
@@ -35,6 +41,7 @@ public class Member extends AbstractEntity {
 
         member.status = MemberStatus.PENDING;
 
+        member.detail = MemberDetail.create();
         return member;
     }
 
@@ -42,12 +49,20 @@ public class Member extends AbstractEntity {
         Assert.state(status == MemberStatus.PENDING, "PENDING 상태가 아닙니다");
 
         this.status = MemberStatus.ACTIVE;
+        this.detail.activate();
     }
 
     public void deactivate() {
         Assert.state(status == MemberStatus.ACTIVE, "ACTIVATE 상태가 아닙니다");
 
         this.status = MemberStatus.DEACTIVATED;
+        this.detail.deactivate();
+    }
+
+    public void updateInfo(MemberInfoUpdateRequest updateRequest) {
+        this.nickname = Objects.requireNonNull(updateRequest.nickname());
+
+        this.detail.updateInfo(updateRequest);
     }
 
     public boolean verifyPassword(String password, PasswordEncoder passwordEncoder) {
