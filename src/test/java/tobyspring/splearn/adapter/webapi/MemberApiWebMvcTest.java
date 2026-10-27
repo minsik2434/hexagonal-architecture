@@ -52,7 +52,7 @@ class MemberApiWebMvcTest {
         String requestJson = objectMapper.writeValueAsString(request);
 
         assertThat(mockMvcTester.post().uri("/api/members").contentType(MediaType.APPLICATION_JSON)
-                .contentType(requestJson))
+                .content(requestJson))
                 .hasStatus(HttpStatus.BAD_REQUEST);
     }
 }
