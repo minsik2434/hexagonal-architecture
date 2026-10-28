@@ -7,9 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestConstructor;
 import tobyspring.splearn.SplearnTestConfiguration;
+import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
 import tobyspring.splearn.domain.member.MemberRegisterRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
@@ -28,9 +30,11 @@ class MemberAuthenticatorTest {
     @Test
     void login(){
         MemberRegisterRequest registerRequest = MemberFixture.createMemberRegisterRequest();
-        memberRegister.register(registerRequest).activate();
+        Member member = memberRegister.register(registerRequest);
+        member.activate();
 
-        var member = memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
+        var loginedMember = memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
+        assertThat(loginedMember).isEqualTo(member);
     }
     
     @Test
