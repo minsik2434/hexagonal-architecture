@@ -1,13 +1,13 @@
 package tobyspring.splearn.domain.member;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.util.Assert;
-import tobyspring.splearn.domain.*;
+import tobyspring.splearn.domain.AbstractEntity;
 import tobyspring.splearn.domain.shared.Email;
 
 import java.util.Objects;

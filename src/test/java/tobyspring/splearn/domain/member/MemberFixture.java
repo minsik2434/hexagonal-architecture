@@ -8,6 +8,10 @@ public class MemberFixture {
         return new MemberRegisterRequest(email, "minsik", "longsecret");
     }
 
+    public static Member createMember(){
+        return Member.register(createMemberRegisterRequest(), createPasswordEncoder());
+    }
+
     public static @NonNull MemberRegisterRequest createMemberRegisterRequest() {
         return createMemberRegisterRequest("la9814@naver.com");
     }
@@ -15,6 +19,12 @@ public class MemberFixture {
     public static Member createMember(Long id) {
         Member member = Member.register(createMemberRegisterRequest(), createPasswordEncoder());
         ReflectionTestUtils.setField(member, "id", id);
+        return member;
+    }
+
+    public static Member createActiveMember() {
+        Member member = createMember();
+        member.activate();
         return member;
     }
 
