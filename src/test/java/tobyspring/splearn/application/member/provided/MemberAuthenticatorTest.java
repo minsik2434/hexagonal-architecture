@@ -1,6 +1,7 @@
 package tobyspring.splearn.application.member.provided;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,22 +11,17 @@ import tobyspring.splearn.SplearnTestConfiguration;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
 import tobyspring.splearn.domain.member.MemberRegisterRequest;
+import tobyspring.support.stereotype.ApplicationServiceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-
-@SpringBootTest
-@Transactional
-@Import(SplearnTestConfiguration.class)
+@ApplicationServiceTest
+@RequiredArgsConstructor
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class MemberAuthenticatorTest {
-
-    @Autowired
-    private MemberAuthenticator memberAuthenticator;
-
-    @Autowired
-    private MemberRegister memberRegister;
+    final MemberAuthenticator memberAuthenticator;
+    final MemberRegister memberRegister;
 
     @Test
     void login(){

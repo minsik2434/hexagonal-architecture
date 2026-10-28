@@ -8,15 +8,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestConstructor;
 import tobyspring.splearn.SplearnTestConfiguration;
 import tobyspring.splearn.domain.member.Member;
+import tobyspring.support.stereotype.ApplicationServiceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static tobyspring.splearn.domain.member.MemberFixture.createMemberRegisterRequest;
 
-@SpringBootTest
-@Transactional
-@Import(SplearnTestConfiguration.class)
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@ApplicationServiceTest
 record MemberFinderTest(MemberFinder memberFinder, MemberRegister memberRegister, EntityManager em) {
 
     @Test

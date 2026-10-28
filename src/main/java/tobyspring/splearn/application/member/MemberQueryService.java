@@ -3,7 +3,6 @@ package tobyspring.splearn.application.member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import tobyspring.splearn.application.member.provided.MemberFinder;
 import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.member.Member;
@@ -11,7 +10,6 @@ import tobyspring.splearn.domain.member.Member;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Validated
 public class MemberQueryService implements MemberFinder {
 
     private final MemberRepository memberRepository;
