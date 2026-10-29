@@ -63,9 +63,9 @@ public class MemberApiTest {
 
     @Test
     void duplicateEmail(){
-        memberRegister.register(createMemberRegisterRequest());
-
         MemberRegisterRequest request = createMemberRegisterRequest();
+        memberRegister.register(request);
+
         String requestJson = objectMapper.writeValueAsString(request);
 
         MvcTestResult result = mockMvcTester.post().uri("/api/members").contentType(APPLICATION_JSON)

@@ -1,11 +1,15 @@
 package tobyspring.splearn.domain.member;
 
+import org.instancio.Instancio;
+import org.instancio.Select;
 import org.jspecify.annotations.NonNull;
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class MemberFixture {
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {
-        return new MemberRegisterRequest(email, "minsik", "longsecret");
+        return Instancio.of(MemberRegisterRequest.class)
+                .set(Select.field(MemberRegisterRequest::email), email)
+                .create();
     }
 
     public static Member createMember(){
@@ -13,7 +17,7 @@ public class MemberFixture {
     }
 
     public static @NonNull MemberRegisterRequest createMemberRegisterRequest() {
-        return createMemberRegisterRequest("la9814@naver.com");
+        return createMemberRegisterRequest(Instancio.gen().net().email().get());
     }
 
     public static Member createMember(Long id) {

@@ -36,6 +36,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.junit-pioneer:junit-pioneer:2.3.0")
+	testImplementation("org.instancio:instancio-core:6.0.0-RC2")
 	testImplementation("org.mockito:mockito-core:5.23.0")
 	testCompileOnly("org.projectlombok:lombok")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")

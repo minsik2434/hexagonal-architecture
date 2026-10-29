@@ -14,10 +14,13 @@ class MemberTest {
 
     PasswordEncoder passwordEncoder;
 
+    MemberRegisterRequest registerRequest;
+
     @BeforeEach
     void setup() {
         this.passwordEncoder = createPasswordEncoder();
-        member = Member.register(createMemberRegisterRequest(), passwordEncoder);
+        registerRequest = createMemberRegisterRequest();
+        member = Member.register(registerRequest, passwordEncoder);
     }
     
     @Test
@@ -66,7 +69,7 @@ class MemberTest {
 
     @Test
     void verifyPassword(){
-        assertThat(member.verifyPassword("longsecret", passwordEncoder)).isTrue();
+        assertThat(member.verifyPassword(registerRequest.password(), passwordEncoder)).isTrue();
         assertThat(member.verifyPassword("invalid", passwordEncoder)).isFalse();
     }
 

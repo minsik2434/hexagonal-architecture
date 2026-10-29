@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static tobyspring.splearn.domain.member.MemberFixture.createMemberRegisterRequest;
 
 @ApplicationServiceTest
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 public record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
 
     @Test
@@ -28,9 +29,11 @@ public record MemberRegisterTest(MemberRegister memberRegister, EntityManager en
 
     @Test
     void duplicateEmailFail(){
-        Member member = memberRegister.register(createMemberRegisterRequest());
+        MemberRegisterRequest request = createMemberRegisterRequest();
 
-        assertThatThrownBy(() -> memberRegister.register(createMemberRegisterRequest()))
+        memberRegister.register(request);
+
+        assertThatThrownBy(() -> memberRegister.register(request))
                 .isInstanceOf(DuplicateEmailException.class);
     }
 

@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static tobyspring.splearn.domain.member.MemberFixture.createMemberRegisterRequest;
 
 @ApplicationServiceTest
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 record MemberFinderTest(MemberFinder memberFinder, MemberRegister memberRegister, EntityManager em) {
 
     @Test
